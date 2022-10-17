@@ -1,23 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { AddWords } from "./AddWords/AddWords";
+import "./App.css";
+import { List } from "./List/List";
 
 function App() {
+  const storage = localStorage.getItem("list")
+    ? JSON.parse(localStorage.getItem("list") || [])
+    : [];
+
+  const [listWords, setListWords] = React.useState(storage);
+
+  const writeListWords = (newWord) => {
+    const newList = listWords.concat(newWord);
+    setListWords(newList);
+    localStorage.setItem("list", JSON.stringify(newList));
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <AddWords writeListWords={writeListWords}></AddWords>
+      <List words={listWords}></List>
     </div>
   );
 }

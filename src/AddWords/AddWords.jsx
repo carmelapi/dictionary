@@ -11,16 +11,22 @@ export function AddWords(props) {
     setInputIta(event.target.value);
   };
 
-  const onClick = () => {
+  const onFormSubmit = (e) => {
+    e.preventDefault();
     if (inputSvenska.length === 0 || inputIta.length === 0) {
-      return alert("scem");
+      return alert("Non hai scritto nulla");
     }
-    props.writeListWords({ svenska: inputSvenska, ita: inputIta });
+    props.writeListWords({
+      id: Date.now(),
+      svenska: inputSvenska,
+      ita: inputIta,
+    });
+    setInputSvenska("");
+    setInputIta("");
   };
 
   return (
-    <div>
-      <span>{inputSvenska}</span>
+    <form onSubmit={onFormSubmit}>
       <input
         type="text"
         onChange={onChangeHandlerSvenska}
@@ -28,7 +34,7 @@ export function AddWords(props) {
       ></input>
       <input type="text" onChange={onChangeHandlerIta} value={inputIta}></input>
 
-      <button onClick={onClick}> Add</button>
-    </div>
+      <button type="submit"> Add</button>
+    </form>
   );
 }
